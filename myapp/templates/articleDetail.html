@@ -1,0 +1,53 @@
+
+{% extends "layout.html" %}
+
+
+
+<!-- Page Header -->
+<!-- Set your background image for this header on the line below. -->
+{% block pageheader %}
+<header class="intro-header" style="background-image: url('/static/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading">
+                    <h1>Posts</h1>
+                    <hr class="small">
+                    <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+<!-- Main Content -->
+{% block maincontent %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+            <div class="post-preview">
+                <a href="{{ url_for('showArticleDetail', id=article.id )}}">
+                    <h2 class="post-title">
+                        {{ article.title }}
+                    </h2>
+                    <div class="tag">Tags: {% for tag in article.tags %}
+                        <a href="#">{{ tag }}</a> {% endfor %}
+                    </div>
+                    <h3 class="post-subtitle">
+                        {{ article.content }}
+                    </h3>
+                </a>
+                <p class="post-meta">Posted by <a href="#">{{ article.author.username }}</a> on {{ article.date_published }}</p>
+            </div>
+            
+        
+        </div>
+    </div>
+</div>
+
+<hr>
+{% endblock %}
+
+    

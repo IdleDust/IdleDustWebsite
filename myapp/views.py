@@ -1,23 +1,26 @@
 from myapp import app
 from flask import render_template
+from database  import Article, User, getAllArticles, getArticleByID
 
 @app.route('/')
 @app.route('/index')
-@app.route('/index.html')
 def home():
-	return render_template("index.html")
+	articles = getAllArticles();
+	return render_template("index.html", articles=articles)
 
 @app.route('/welcome')
-@app.route('/welcome.html')
 def welcome():
     return render_template("welcome.html")
 
 @app.route('/about')
-@app.route('/about.html')
 def about():
 	return render_template("about.html")
 
 @app.route('/contact')
-@app.route('/contact.html')
 def contact():
 	return render_template("contact.html")
+
+@app.route('/article/<id>')
+def showArticleDetail(id):
+	article = getArticleByID(id=id);
+	return render_template("articleDetail.html", article=article)
