@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="site-heading">
-                    <h1>Posts</h1>
+                    <h1>Post Details</h1>
                     <hr class="small">
                     <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
                 </div>
@@ -26,22 +26,22 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
             <div class="post-preview">
                 <a href="{{ url_for('showArticleDetail', id=article.id )}}">
                     <h2 class="post-title">
                         {{ article.title }}
                     </h2>
-                    <div class="tag">Tags: {% for tag in article.tags %}
-                        <a href="#">{{ tag }}</a> {% endfor %}
-                    </div>
+                    
                     <h3 class="post-subtitle">
                         {{ article.content }}
                     </h3>
                 </a>
-                <p class="post-meta">Posted by <a href="#">{{ article.author.username }}</a> on {{ article.date_published }}</p>
+                <p class="post-meta">Posted by <a href="#">{{ article.author.username }}</a> on {{ article.time_published }}</p>
+                
             </div>
-            
+            <div class="tag">Tags: {% for tag in article.tags %}
+                <a href="{{ url_for('showArticleByTag', tag=tag) }}">{{ tag }}</a> {% endfor %}
+            </div>
         
         </div>
     </div>

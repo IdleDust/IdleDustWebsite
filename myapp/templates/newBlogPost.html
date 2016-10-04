@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block pageheader %}
+    <header class="intro-header" style="background-image: url('/static/img/home-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>new blog post</h1>
+                        <hr class="small">
+                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+ {% endblock %}
+
+<!-- Main Content -->
+{% block maincontent %}
+<form action="{{ url_for('postArticle') }}" method="post">
+	<div class="col-lg-1"></div>
+	<div class="col-lg-10">
+		<div class="form-group row">
+			<label for="exampleInputEmail1" class="col-sm-1 col-md-1 col-lg-1">Title</label>
+			<div class="col-sm-11 col-md-11 col-lg-11">
+				<input name="inputTitle" type="title" class="form-control" id="inputTitle" aria-describedby="inputTitle" placeholder="Enter title">
+			</div>
+		</div>
+		<div class="form-group row">
+			<textarea class="form-control" id="exampleTextarea" rows="10" name="inputContent"></textarea>
+		</div>
+		<div class="form-group row">
+			<input name="tag1" id="input_tag_1" class="col-md-2 col-lg-2" placeholder="add tag">
+			<input name="tag2" id="input_tag_2" class="col-md-2 col-lg-2" placeholder="add tag">
+			<input name="tag3" id="input_tag_3" class="col-md-2 col-lg-2" placeholder="add tag">
+			<input name="tag4" id="input_tag_4" class="col-md-2 col-lg-2" placeholder="add tag">
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</div>
+	<div class="col-lg-1"></div>
+</form>
+<hr>
+{% endblock %}

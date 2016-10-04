@@ -33,10 +33,10 @@
                         </h2>
                         
                         <h3 class="post-subtitle">
-                            {{ article.content }}
+                            {{ article.summary }}
                         </h3>
                     </a>
-                    <p class="post-meta">Posted by <a href="#">{{ article.author.username }}</a> on {{ article.date_published }}</p>
+                    <p class="post-meta">Posted by <a href="#">{{ article.author.username }}</a> on {{ article.time_published }}</p>
                 </div>
                 {% endfor %}
             

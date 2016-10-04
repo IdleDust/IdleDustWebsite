@@ -1,9 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 from mongoengine import *
 from flask.ext.mongoengine import MongoEngine
 from myapp import app
 import datetime
+from global_ import *
 
 #----------------------------------------
 # database
@@ -28,48 +31,98 @@ class User(Document):
     username = StringField(max_length=50)
     password = StringField(max_length=50)
 
+def createUser(email, username, password):
+	user = User();
+	user.email = email.lower();
+	user.username = username.lower();
+	user.password = password.lower();
+	user.save();
+	return user;
+
+
 class Article(Document):
-	title = StringField(max_length=200, required=True)
-	content = StringField()
-	author = ReferenceField(User)
-	date_published = DateTimeField(default=datetime.datetime.now)
-	tags = ListField(StringField(max_length=50))
+	title = StringField(max_length=200, required=True);
+	summary = StringField(max_length=500);
+	content = StringField();
+	author = ReferenceField(User);
+	time_published = DateTimeField(default=datetime.datetime.now);
+	tags = ListField(StringField(max_length=50));
 
-
-def getArticlesByTags(tags):
-	articles = []
-	for tag in tags:
-		articles += Article.objects(tags=tag);
-	return articles;
-			
+def createArticle(title, summary, content, author, tags, time_published=None):
+	article = Article();
+	article.title = title;
+	article.summary = summary;
+	article.content = content;
+	article.author = author;
+	if time_published == None :
+		article.time_published = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S");
+	else:
+		article.time_published = time_published;
+	article.tags = tags;
+	article.save();
 
 def getAllArticles():
 	return Article.objects().all();
 
+def getArticlesByTag(tag):
+	print tag;
+	articles = [];
+	articles = Article.objects(tags=tag);
+	print articles;
+	newarticles = sorted(articles, key=lambda x: x.time_published, reverse=True);
+	for article in newarticles:
+		print article.time_published
+	return newarticles;
+
 def getArticleByID(id):
 	return Article.objects().get(id=id);
 
+
+
+
 User.objects.delete()
-print User.objects.count()
-ross = User(email='ross@example.com', username='Ross', password='exam123').save()
-print ross.id
+email='ross@gmail.com';
+username='Ross';
+password='example123';
+ross = createUser(email, username, password);
+
 
 print(User.objects.count())
 l = User.objects().all()[0]
-print l.email
-print l.username
-print l.password
+print l.email + " " + l.username + " " + l.password
 
-article1 = Article(title="Fun with the MongoEngine", author=ross)
-article1.content = "Took a look at MongoEngine today, looks pretty cool.";
-article1.tags = ["mongoengine", "mongodb"];
-article1.save();
+Article.objects.delete()
+title="Fun with the MongoEngine";
+author = ross;
+content = "Took a look at MongoEngine today, looks pretty cool. looks pretty cool.";
+summary = content;
+tags = ["mongoengine", "mongodb"];
+article1 = createArticle(title, summary, content, author, tags)
 
-article2 = Article(title="System Design Interview Questions", author=ross)
-article2.content = "System design interview questions can be quite open-ended";
-article2.tags = ["system design", "mongodb"];
-article2.save();
+title="How To Design Google Docs";
+author = ross;
+summary = "System design interviews can be quite open-ended and require a wide range of knowledge.";
+content = "To prepare well for such kind of interviews," \
+"it’s important to cover different areas instead of focusing on a single topic.\n" \
+"We’ve spent a lot of time selecting system design questions to analyze, our main criteria are:"\
+"The question is popular and classic. \n"\
+"We care about the diversity of questions we select\n"\
+"The analysis can be helpful to other interview questions\n\n"\
+"This week, we’d like to discuss how to design Google Docs. "\
+"You will find it quite different from the analysis of our previous questions.";
+tags = ["system design", "google docs", "mongodb"];
+article2 = createArticle(title, summary, content, author, tags)
 
+# article1 = Article(title="Fun with the MongoEngine", author=ross)
+# article1.content = "Took a look at MongoEngine today, looks pretty cool. looks pretty cool.";
+# article1.summary = article1.content;
+# article1.tags = ["mongoengine", "mongodb"];
+# article1.save();
+
+# article2 = Article(title="System Design Interview Questions", author=ross)
+# article2.content = "System design interview questions can be quite open-ended";
+# article2.tags = ["system design", "mongodb"];
+# article2.save();
 	
 	
 
