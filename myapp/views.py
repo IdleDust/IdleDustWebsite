@@ -1,6 +1,9 @@
 from myapp import app
 from flask import render_template, request, redirect, url_for
 from database  import Article, User, getAllArticles, getArticleByID,getArticlesByTag, createArticle
+from database import login_manager
+import flask_login
+
 
 @app.route('/')
 @app.route('/index')
@@ -9,9 +12,47 @@ def home():
 	newarticles = sorted(articles, key=lambda x: x.time_published, reverse=True);
 	return render_template("index.html", articles=newarticles)
 
-@app.route('/welcome')
-def welcome():
-    return render_template("welcome.html")
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+	if request.method == 'GET':
+		return '''
+		<form action='login' method='POST'>
+                <input type='text' name='email' id='email' placeholder='email'></input>
+                <input type='password' name='pw' id='pw' placeholder='password'></input>
+                <input type='submit' name='submit'></input>
+               </form>
+		'''
+	email = request.form.get('email', '');
+	users = User.objects(email=email);
+	if users.count() > 0:
+		print users.count()
+		if request.form['pw'] == users[0].password:
+			user = User()
+			user.id = email;
+			flask_login.login_user(user);
+			return redirect(url_for('protected'))
+		return 'Bad Login'
+	return 'User not exists'
+
+@app.route('/protected')
+@flask_login.login_required
+def protected():
+    print 'Logged in as: ' + flask_login.current_user.id
+    return redirect(url_for('home'))
+
+# callback for login failures
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+	return render_template('unauthorized.html');
+	
+
+@app.route('/logout')
+@flask_login.login_required
+def logout():
+	# print "*****"
+	# print flask_login.current_user
+	flask_login.logout_user();
+	return redirect(url_for('home'))
 
 @app.route('/about')
 def about():
@@ -32,6 +73,7 @@ def showArticleByTag(tag):
 	return render_template("index.html", articles=articles);
 
 @app.route("/newPost")
+@flask_login.login_required
 def newBlogPost():
 	return render_template("newBlogPost.html")
 

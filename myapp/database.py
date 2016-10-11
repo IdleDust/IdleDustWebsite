@@ -19,17 +19,51 @@ from global_ import *
 # app.config["MONGODB_DB"] = DB_NAME
 # connect(DB_NAME, host='mongodb://' + DB_USERNAME + ':' + DB_PASSWORD + '@' + DB_HOST_ADDRESS)
 
-connect()
+# connect()
 db = MongoEngine(app) 
 # -----------------------------------------------
 # By default, Flask-MongoEngine assumes that the mongod instance 
 # is running on localhost on port 27017, 
 # and you wish to connect to the database named test.
 # -------------------------------------------------
-class User(Document):
+import flask_login
+
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+
+class User(Document, flask_login.UserMixin):
     email = StringField(required=True)
     username = StringField(max_length=50)
     password = StringField(max_length=50)
+
+
+# user_loader callback. This callback is used to reload
+# the user object from the user ID stored in the session
+@login_manager.user_loader
+def user_loader(email):
+	print "------user_loader active-------"
+	users = User.objects(email=email)
+	if users.count == 0:
+		return;
+	user = User()
+	user.id = email
+	return user
+
+# # This callback should behave the same as your user_loader callback, 
+# # except that it accepts the Flask request instead of a user_id.
+# @login_manager.request_loader
+# def request_loader(request):
+# 	print "----------"
+# 	print "request_loader active"
+# 	email = request.form.get('email')
+# 	users = User.objects(email=email)
+# 	if users.count == 0:
+# 		return; 
+# 	user = User()
+# 	user.id = email
+# 	user.is_authenticated = request.form['pw'] == users[0].password
+# 	return user
+
 
 def createUser(email, username, password):
 	user = User();
@@ -90,6 +124,8 @@ ross = createUser(email, username, password);
 print(User.objects.count())
 l = User.objects().all()[0]
 print l.email + " " + l.username + " " + l.password
+# r = User.objects(email=email)
+# print r.count()
 
 Article.objects.delete()
 title="Fun with the MongoEngine";

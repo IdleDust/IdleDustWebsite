@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block pageheader %}
+<header class="intro-header" style="background-image: url('/static/img/home-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>IdleDust</h1>
+                        <hr class="small">
+                        <span class="subheading">A Simple Blog & Personal Website</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block maincontent %}
+<!-- <div class="col-lg-1"></div> -->
+<div class="col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+    <p>Unauthorized please <a href="{{url_for('login')}}">log in</a></p>
+</div>
+<!-- <div class="col-lg-1"></div> -->
+{% endblock %}
