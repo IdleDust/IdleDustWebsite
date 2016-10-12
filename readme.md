@@ -24,14 +24,14 @@
 
 
 
-
 ###working on
 * adding new blog post page - simplified version(finished)
-* newPost form authentication
+* newPost form validation
 * admin login & authentication
-* validate login form
+	* remember me function 
+	* change Log In on Navgation to "" when user already logged in 
 
 ####Problems
-1. Lose data when database shutdown
+1. Lose data when database shutdown(database migration)
 
 

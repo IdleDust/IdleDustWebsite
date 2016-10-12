@@ -8,6 +8,4 @@ app.config.from_object("myappconfig")
 
 
 
-
-
-import myapp.views, myapp.database
+import myapp.views, myapp.models

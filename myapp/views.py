@@ -1,7 +1,7 @@
 from myapp import app
-from flask import render_template, request, redirect, url_for
-from database  import Article, User, getAllArticles, getArticleByID,getArticlesByTag, createArticle
-from database import login_manager
+from flask import render_template, request, redirect, url_for, flash
+from models  import Article, User, getAllArticles, getArticleByID,getArticlesByTag, createArticle
+from models import login_manager
 import flask_login
 
 
@@ -15,13 +15,15 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if request.method == 'GET':
-		return '''
-		<form action='login' method='POST'>
-                <input type='text' name='email' id='email' placeholder='email'></input>
-                <input type='password' name='pw' id='pw' placeholder='password'></input>
-                <input type='submit' name='submit'></input>
-               </form>
-		'''
+		# return '''
+		# <form action='login' method='POST'>
+  #               <input type='text' name='email' id='email' placeholder='email'></input>
+  #               <input type='password' name='pw' id='pw' placeholder='password'></input>
+  #               <input type='submit' name='submit'></input>
+  #              </form>
+		# '''
+		return render_template('login.html')
+		
 	email = request.form.get('email', '');
 	users = User.objects(email=email);
 	if users.count() > 0:
